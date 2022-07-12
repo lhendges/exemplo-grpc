@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.via.explojista.dojo.grpc";
+
+enum Company {
+  APPLE = 0;
+  MICROSOFT = 1;
+}
+
+message Request {
+  Company company = 1;
+}
+message ResponseItem {
+  string company = 1;
+  string date = 2;
+  double close_price = 3;
+  double open_price = 4;
+  double high_price = 5;
+  double low_price = 6;
+  double volume = 7;
+}
+
+message Response {
+  repeated ResponseItem items = 1;
+}
+
+service QuotationService {
+  rpc getQuotation(Request) returns (Response);
+}
