@@ -2,13 +2,13 @@ package br.com.via.explojista.dojo.grpc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
-import java.io.IOException;
-
+@EnableFeignClients
 @SpringBootApplication
 public class GrpcApplication {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         SpringApplication.run(GrpcApplication.class, args);
     }
 }
