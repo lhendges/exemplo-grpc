@@ -13,7 +13,7 @@ message Request {
   Company company = 1;
 }
 
-message ResponseItem {
+message QuoteResponseItem {
   string company = 1;
   double current_price = 2;
   double change = 3;
@@ -24,11 +24,21 @@ message ResponseItem {
   string date = 8;
 }
 
-message Response {
-  ResponseItem items = 1;
+message QuoteResponse {
+  QuoteResponseItem items = 1;
+}
+
+message RecomendationResponse {
+  int32 buy = 1;
+  int32 sell = 2;
+  int32 hold = 3;
+  string period = 4;
+  int32 strongBuy = 5;
+  int32 strongSell = 6;
+  string company = 7;
 }
 
 service QuotationService {
-  rpc getQuotationByStockCode(Request) returns (Response);
-  rpc getQuotationsByStockCode(Request) returns (stream Response);
+  rpc getQuotationByStockSymbol(Request) returns (QuoteResponse);
+  rpc getRecomendationByStockSymbol(Request) returns (stream RecomendationResponse);
 }
