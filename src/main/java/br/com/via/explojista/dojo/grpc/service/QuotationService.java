@@ -1,6 +1,9 @@
 package br.com.via.explojista.dojo.grpc.service;
 
-import br.com.via.explojista.dojo.grpc.*;
+import br.com.via.explojista.dojo.grpc.QuotationServiceGrpc;
+import br.com.via.explojista.dojo.grpc.QuoteResponse;
+import br.com.via.explojista.dojo.grpc.RecomendationResponse;
+import br.com.via.explojista.dojo.grpc.Request;
 import br.com.via.explojista.dojo.grpc.client.FinnhubClient;
 import br.com.via.explojista.dojo.grpc.dto.FinnhubQuoteResponse;
 import br.com.via.explojista.dojo.grpc.dto.FinnhubRecomendationResponse;
@@ -20,9 +23,7 @@ public class QuotationService extends QuotationServiceGrpc.QuotationServiceImplB
     public void getQuotationByStockSymbol(Request request, StreamObserver<QuoteResponse> responseObserver) {
         FinnhubQuoteResponse response = finnhubClient.getQuote("sandbox_cbaungaad3i91bfqctug", request.getCompany().name());
 
-        QuoteResponse.Builder resBuilder = QuoteResponse.newBuilder();
-        resBuilder.setItems(buidResponseItem(request, response));
-        responseObserver.onNext(resBuilder.build());
+        responseObserver.onNext(buildQuoteResponse(request, response));
         responseObserver.onCompleted();
     }
 
@@ -51,8 +52,8 @@ public class QuotationService extends QuotationServiceGrpc.QuotationServiceImplB
         responseObserver.onCompleted();
     }
 
-    private QuoteResponseItem buidResponseItem(Request request, FinnhubQuoteResponse quoteResponse) {
-        return QuoteResponseItem.newBuilder()
+    private QuoteResponse buildQuoteResponse(Request request, FinnhubQuoteResponse quoteResponse) {
+        return QuoteResponse.newBuilder()
                 .setCompany(request.getCompany().name())
                 .setCurrentPrice(quoteResponse.getCurrentPrice())
                 .setChange(quoteResponse.getChange())
