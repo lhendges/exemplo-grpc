@@ -1,7 +1,5 @@
 package br.com.via.explojista.dojo.grpc.dto;
 
-import java.time.LocalDate;
-
 public class FinnhubRecomendationResponse {
 
     private Integer buy;

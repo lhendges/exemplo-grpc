@@ -10,6 +10,7 @@ import br.com.via.explojista.dojo.grpc.dto.FinnhubRecomendationResponse;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,9 +20,12 @@ public class QuotationService extends QuotationServiceGrpc.QuotationServiceImplB
     @Autowired
     private FinnhubClient finnhubClient;
 
+    @Value("${apiKey}")
+    private String apikey;
+
     @Override
     public void getQuotationByStockSymbol(Request request, StreamObserver<QuoteResponse> responseObserver) {
-        FinnhubQuoteResponse response = finnhubClient.getQuote("sandbox_cbaungaad3i91bfqctug", request.getCompany().name());
+        FinnhubQuoteResponse response = finnhubClient.getQuote(apikey, request.getCompany().name());
 
         responseObserver.onNext(buildQuoteResponse(request, response));
         responseObserver.onCompleted();
@@ -29,7 +33,7 @@ public class QuotationService extends QuotationServiceGrpc.QuotationServiceImplB
 
     @Override
     public void getRecomendationByStockSymbol(Request request, StreamObserver<RecomendationResponse> responseObserver) {
-        List<FinnhubRecomendationResponse> response = finnhubClient.getRecomendations("sandbox_cbaungaad3i91bfqctug", request.getCompany().name());
+        List<FinnhubRecomendationResponse> response = finnhubClient.getRecomendations(apikey, request.getCompany().name());
         for (FinnhubRecomendationResponse finnhubRecomendationResponse : response) {
             responseObserver.onNext(
                     RecomendationResponse.newBuilder()

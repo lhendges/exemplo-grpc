@@ -18,7 +18,6 @@ public class FinnhubQuoteResponse {
     private Double openPriceDay;
     @JsonAlias("pc")
     private Double previousClosePrice;
-
     @JsonAlias("t")
     private Long timestamp;
 
